@@ -30,7 +30,7 @@ public interface MiniSocialMediaPlatform extends Serializable {
 	 * @return the ID of the created account.
 	 * 
 	 */
-	int createAccount(String handle) throws IllegalHandleException, InvalidHandleException;
+	int createAccount(String handle) throws IllegalHandleException, socialmedia.IllegalHandleException, InvalidHandleException;
 
 	/**
 	 * The method removes the account with the corresponding ID from the platform.

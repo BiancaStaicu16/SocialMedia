@@ -1,8 +1,4 @@
-import socialmedia.AccountIDNotRecognisedException;
-import socialmedia.BadSocialMedia;
-import socialmedia.IllegalHandleException;
-import socialmedia.InvalidHandleException;
-import socialmedia.SocialMediaPlatform;
+import socialmedia.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -42,10 +38,10 @@ public class SocialMediaPlatformTestApp {
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
-		} catch (InvalidHandleException e) {
-			assert (false) : "InvalidHandleException thrown incorrectly";
 		} catch (AccountIDNotRecognisedException e) {
 			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+		} catch (InvalidHandleException e) {
+			e.printStackTrace();
 		}
 
 	}
