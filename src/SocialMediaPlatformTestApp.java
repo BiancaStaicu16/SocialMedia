@@ -20,6 +20,7 @@ public class SocialMediaPlatformTestApp {
 	public static void main(String[] args) {
 		System.out.println("Hello world");
 		System.out.println("The system compiled and started the execution...");
+		System.out.println("banana is a good fruit.");
 
 		SocialMediaPlatform platform = new BadSocialMedia();
 
