@@ -19,6 +19,7 @@ public class SocialMediaPlatformTestApp {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Hello world");
+		System.out.println("Hello world");
 		SocialMediaPlatform platform = new BadSocialMedia();
 
 		assert (platform.getNumberOfAccounts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
