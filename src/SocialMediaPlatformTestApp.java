@@ -21,7 +21,8 @@ public class SocialMediaPlatformTestApp {
 		System.out.println("Hello world");
 		System.out.println("Hello world");
 		SocialMediaPlatform platform = new BadSocialMedia();
-
+		
+		System.out.println("Github is a pain in the ass");
 		assert (platform.getNumberOfAccounts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalOriginalPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalCommentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
