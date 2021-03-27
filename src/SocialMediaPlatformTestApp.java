@@ -21,7 +21,7 @@ public class SocialMediaPlatformTestApp {
 		System.out.println("Hello world");
 		System.out.println(" finally frdiday!");
 		System.out.println("The system compiled and started the execution...");
-		System.out.println("abc");
+		System.out.println("I like grapes");
 
 		SocialMediaPlatform platform = new BadSocialMedia();
 
