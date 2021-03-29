@@ -11,6 +11,7 @@ import java.io.IOException;
  */
 public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
+
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		Account firstAccount = new Account(handle);
@@ -20,7 +21,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
-		// TODO Auto-generated method stubt
+		// TODO Auto-generated method stub
 		Accounts.removeAccount(id);	
 	}
 
@@ -28,13 +29,21 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	public void changeAccountHandle(String oldHandle, String newHandle)
 			throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
 		// TODO Auto-generated method stub
-
+		Accounts.changeAccountHandle(oldHandle, newHandle);
 	}
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
 		// TODO Auto-generated method stub
-		return null;
+		String showAnAccount = "";
+
+		for(Account account: Accounts.getAccountsList()){
+			if(account.getStringHandle().equals(handle)){
+				showAnAccount = "ID: " + account.getNumId() + "\n" + "Handle: " + account.getStringHandle() + "\n"
+						+ "Description: " + account.getDescription() + "\n" + "Post count: " + "\n" + " Endorse count: " + "\n";
+			}
+		}
+		return showAnAccount;
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package socialmedia;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class Accounts {
 	
 	private static Account[] accountList;
@@ -18,7 +17,6 @@ public class Accounts {
 	
 	public static void addAccount(Account item) {
 		accountList[accountList.length + 1] = item;
-		
 	}
 	
 	public static void removeAccount(int id) {
@@ -33,6 +31,13 @@ public class Accounts {
 		}
 		Account[] tempArray = tempList.toArray(new Account[tempList.size()]);
 		accountList = tempArray;
-		
+	}
+
+	public static void changeAccountHandle(String oldHandle, String newHandle) {
+		for(Account account: accountList){
+			if(account.getStringHandle().equals(oldHandle)){
+				account.setStringHandle(newHandle);
+			}
+		}
 	}
 }
