@@ -13,14 +13,15 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
+		Account firstAccount = new Account(handle);
+		Accounts.addAccount(firstAccount);
 		return 0;
 	}
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		// TODO Auto-generated method stubt
+		Accounts.removeAccount(id);	
 	}
 
 	@Override
