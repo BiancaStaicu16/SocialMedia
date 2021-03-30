@@ -14,8 +14,13 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
-		Account firstAccount = new Account(handle);
-		Accounts.addAccount(firstAccount);
+		for(Account account: Accounts.getAccountsList()){
+			if(!account.getStringHandle().equals(handle) && handle != null && handle.length() <= 30 && !handle.contains(" ")){
+				Account firstAccount = new Account(handle);
+				Accounts.addAccount(firstAccount);
+				return firstAccount.getNumId();
+			}
+		}
 		return 0;
 	}
 
@@ -46,13 +51,20 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
 		// TODO Auto-generated method stub
-		return 0;
+
+		Post firstPost = new Post(message, handle);
+		Posts.addPost(firstPost);
+		return firstPost.getPostId();
 	}
 
 	@Override
 	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		// TODO Auto-generated method stub
+
+
+
+//		Post firstEndorsedPost = new Post()
 		return 0;
 	}
 
