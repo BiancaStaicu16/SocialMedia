@@ -19,16 +19,12 @@ public class Accounts {
 		accountList[accountList.length + 1] = item;
 	}
 	
-	public static void removeAccount(int id) {
+	public static void removeAccount(int index) {
+		// Converting the array to an array list
 		List<Account> tempList = Arrays.asList(accountList);
-		
-		int index = 0;
-		for(Account account: accountList) {
-			index++;
-			if(account.getNumId() == id) {
-				tempList.remove(index);
-			}
-		}
+		// Removing the item from the array list at the given index
+		tempList.remove(index);
+		// Converting back to array
 		Account[] tempArray = tempList.toArray(new Account[tempList.size()]);
 		accountList = tempArray;
 	}
