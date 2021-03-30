@@ -21,7 +21,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			else if (handle != null && handle.length() <= 30 && !handle.contains(" ")){
 				throw new InvalidHandleException("Your string handle is invalid.");
 			}
-			
+
 			else {
 				Account firstAccount = new Account(handle);
 				Accounts.addAccount(firstAccount);
@@ -94,7 +94,8 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-		
+
+		// Looping through each post from the posts list and checking some requirements for the post to be endorsed.
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
 				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
@@ -102,6 +103,8 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 				Posts.addPost(firstEndorsement);
 				return firstEndorsement.getPostId();
 			}
+
+			// Throwing exceptions for invalid requirements.
 			else if(post.getPostId() != id ) {
 				throw new PostIDNotRecognisedException("The post ID entered has not been found.");
 			}
@@ -119,6 +122,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
 
+		// Looping through each post from the posts list and checking some requirements for the post to be commented on.
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && message.length() <= 100 &&
 					!message.isEmpty() && !post.getMessage().contains("EP@")){
@@ -127,6 +131,8 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 				Posts.addPost(firstComment);
 				return firstComment.getPostId();
 			}
+
+			// Throwing exceptions for invalid requirements.
 			else if(post.getPostId() != id){
 				throw new PostIDNotRecognisedException("The post ID entered has not been found.");
 			}

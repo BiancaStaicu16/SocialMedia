@@ -11,5 +11,4 @@ public class Posts {
     public static void addPost(Post item){
         postList[postList.length + 1] = item;
     }
-
 }
