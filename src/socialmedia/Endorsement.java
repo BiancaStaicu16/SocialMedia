@@ -9,7 +9,5 @@ public class Endorsement extends Post{
     public void setMessage(String message) {
     	super.setMessage(message);
     }
-    
-    
 
 }

@@ -93,29 +93,56 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	}
 
 	@Override
-	public int endorsePost(String handle, int id)
-			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
+	public int endorsePost(String handle, int id) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
 				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
 				Post firstEndorsement = new Endorsement(endorsedMessage, handle);
 				Posts.addPost(firstEndorsement);
+				return firstEndorsement.getPostId();
 			}
-			
+			else if(post.getPostId() != id ) {
+				throw new PostIDNotRecognisedException("The post ID entered has not been found.");
+			}
+			else if(!post.getStringHandle().equals(handle) ) {
+				throw new HandleNotRecognisedException("The handle that you have entered has not been recognised.");
+			}
+			else if(post.getMessage().contains("EP@")) {
+				throw new NotActionablePostException("This post cannot be endorsed.");
+			}
 		}
-		
-		throw new PostIDNotRecognisedException("The post ID entered has not been found.");
-		
-
-//		Post firstEndorsedPost = new Post()
 		return 0;
 	}
 
 	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
-		// TODO Auto-generated method stub
+
+		for (Post post: Posts.getPostList()) {
+			if(post.getPostId() == id && post.getStringHandle().equals(handle) && message.length() <= 100 &&
+					!message.isEmpty() && !post.getMessage().contains("EP@")){
+
+				Post firstComment = new Comment(message,handle, id);
+				Posts.addPost(firstComment);
+				return firstComment.getPostId();
+			}
+			else if(post.getPostId() != id){
+				throw new PostIDNotRecognisedException("The post ID entered has not been found.");
+			}
+			else if(!post.getStringHandle().equals(handle) ) {
+				throw new HandleNotRecognisedException("The handle that you have entered has not been recognised.");
+			}
+			else if(post.getMessage().contains("EP@")) {
+				throw new NotActionablePostException("This post cannot be endorsed.");
+			}
+			else if(message.isEmpty()) {
+				throw new InvalidPostException("You entered an empty message.");
+			}
+			else if(message.length() > 100) {
+				throw new InvalidPostException("The message you entered was too long.");
+			}
+		}
 		return 0;
 	}
 
