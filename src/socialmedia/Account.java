@@ -41,5 +41,7 @@ public class Account {
 		this.description = description;
 	}
 
-
+	public String toString(){
+		return "numId:  " + numId + "/nstringHandle: " + stringHandle + "/ndescription: "  + description;
+	}
 }
