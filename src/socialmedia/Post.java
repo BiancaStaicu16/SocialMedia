@@ -17,7 +17,10 @@ public class Post {
         id++;
     }
 
-
+    public String getStringHandle() {
+    	return stringHandle;
+    }
+    
     public String getMessage() {
         return message;
     }

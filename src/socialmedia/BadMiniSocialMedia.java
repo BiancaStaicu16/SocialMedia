@@ -95,9 +95,18 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	@Override
 	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
-
-
+		
+		for (Post post: Posts.getPostList()) {
+			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
+				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
+				Post firstEndorsement = new Endorsement(endorsedMessage, handle);
+				Posts.addPost(firstEndorsement);
+			}
+			
+		}
+		
+		throw new PostIDNotRecognisedException("The post ID entered has not been found.");
+		
 
 //		Post firstEndorsedPost = new Post()
 		return 0;

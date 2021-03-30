@@ -12,5 +12,4 @@ public class Posts {
         postList[postList.length + 1] = item;
     }
 
-    public static void addEndorsedPost(Post item) { postList[postList.length + 1] = item; }
 }
