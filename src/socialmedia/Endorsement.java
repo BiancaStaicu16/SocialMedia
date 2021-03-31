@@ -6,12 +6,12 @@ public class Endorsement extends Post{
 	
 	private int endorsementId;
 
-	@Override
     public Endorsement(String message, String stringHandle, int originalPostId) {
         super(message, stringHandle);
         this.originalPostId = originalPostId;
     }
     
+	@Override
     public void setMessage(String message) {
     	super.setMessage(message);
     }
