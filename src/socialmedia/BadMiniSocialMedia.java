@@ -99,7 +99,9 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
 				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
-				Post firstEndorsement = new Endorsement(endorsedMessage, handle);
+				Endorsement firstEndorsement = new Endorsement(endorsedMessage, handle, id);
+				int d = firstEndorsement.getPostId();
+				firstEndorsement.setEndorsementId(d);
 				Posts.addPost(firstEndorsement);
 				return firstEndorsement.getPostId();
 			}
@@ -154,7 +156,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
+
 
 	}
 
