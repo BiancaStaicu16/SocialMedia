@@ -13,37 +13,42 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
+		
+		// If the handle is invalid, throw the exception
+		if (handle == null && handle.length() >= 30 && !handle.contains(" ")){
+			throw new InvalidHandleException("Your string handle is invalid.");
+		}
+		
+		// If the handle already exists, throw an exception
 		for(Account account: Accounts.getAccountsList()){
 			if(account.getStringHandle().equals(handle)) {
 				throw new IllegalHandleException("An account with this string handle already exists.");
 			}
-			
-			else if (handle != null && handle.length() <= 30 && !handle.contains(" ")){
-				throw new InvalidHandleException("Your string handle is invalid.");
-			}
-
-			else {
-				Account firstAccount = new Account(handle);
-				Accounts.addAccount(firstAccount);
-				return firstAccount.getNumId();
-			}
 		}
-		return 0;
+
+		Account firstAccount = new Account(handle);
+		Accounts.addAccount(firstAccount);
+		return firstAccount.getNumId();
+
 	}
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
+		boolean accountFound = false;
 		// Looping until the index variable reaches the length of the accounts list
 		for(int index = 0; index < Accounts.getAccountsList().length; index++) {
 			// Getting the numerical ID of each account and comparing it to the id that has been passed in
 			if (Accounts.getAccountsList()[index].getNumId() == id) {
 				// If the id has been found, it will be removed from the list of accounts
 				Accounts.removeAccount(index);
+				accountFound = true;
 				break;
 			}
 		}
-		// If there is so matching ID
-		throw new AccountIDNotRecognisedException("The account ID entered wasn't found.");
+		// If there is no matching ID
+		if (accountFound == false){
+			throw new AccountIDNotRecognisedException("The account ID entered wasn't found.");
+		}
 			
 	}
 
@@ -65,7 +70,6 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			}
 		}
 		throw new HandleNotRecognisedException("The handle that you have entered has not been recognised.");
-		
 	}
 
 	@Override
@@ -99,9 +103,10 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
 				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
-				Post firstEndorsement = new Endorsement(endorsedMessage, handle, id);
-				firstEndorsement.
-				Posts.addPost(firstEndorsement);
+				Endorsement firstEndorsement = new Endorsement(endorsedMessage, handle, id);
+				int initialPostId = firstEndorsement.getPostId();
+				firstEndorsement.setEndorsementId(initialPostId);
+				Endorsements.addEndorsement(firstEndorsement);
 				return firstEndorsement.getPostId();
 			}
 
@@ -128,8 +133,10 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && message.length() <= 100 &&
 					!message.isEmpty() && !post.getMessage().contains("EP@")){
 
-				Post firstComment = new Comment(message,handle, id);
-				Posts.addPost(firstComment);
+				Comment firstComment = new Comment(message,handle, id);
+				int initialPostId = firstComment.getPostId();
+				firstComment.setCommentId(initialPostId);
+				Comments.addComment(firstComment);
 				return firstComment.getPostId();
 			}
 
@@ -155,14 +162,82 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		boolean postFound = false;
+		int index = 0; 
+		Post[] postList = Posts.getPostList();
+		while(index < postList.length && postFound == false) {
+			if(postList[index].getPostId() == id) {
+				postList[index].setMessage("The original content was removed from the system and is no longer available.");
+				postList[index].setStringHandle(null); // No longer linked to an account
+				postList[index].setPostId(000); // Post id changed so that the post can't be accessed using the post id
+				postFound = true;
+			}
+			index++;
+		}
+		
+		if(postFound == false) {
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		}
+		
+		else {
+			// Removing any associated endorsements
+			for (Endorsement endorsement: Endorsements.getEndorsementList()) {
+				if(endorsement.getOriginalPostId() == id) {
+					endorsement.setMessage("The original content was removed from the system and is no longer available.");
+					endorsement.setStringHandle(null);
+					endorsement.setPostId(000);
+				}
+			}
+			
+			// Removing any associated comments
+			for (Comment comment: Comments.getCommentList()) {
+				if(comment.getOriginalPostId() == id) {
+					comment.setMessage("The original content was removed from the system and is no longer available.");
+					comment.setStringHandle(null);
+					comment.setOriginalPostId(000);
+				}
+			}
+		}
 	}
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		boolean postFound = false;
+		int index = 0; 
+		Post[] postList = Posts.getPostList();
+		while(index < postList.length && postFound == false) {
+			if(postList[index].getPostId() == id) {
+				postFound = true;
+			}
+		}
+		
+		if(postFound == false) {
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		}
+		// If the post was found
+		else {
+			// Finding the number of endorsed posted specific to the required post
+			int numEndorsedPosts = 0;
+			for(int num = 0; num < Endorsements.getEndorsementList().length; num++) {
+				if(Endorsements.getEndorsementList()[num].getOriginalPostId() == id) {
+					numEndorsedPosts++;
+				}
+			}
+			
+			// Finding the number of comments under the post
+			int numComments = 0;
+			for(int count = 0; count < Comments.getCommentList().length; count++) {
+				if(Comments.getCommentList()[count].getOriginalPostId() == id) {
+					numComments++;
+				}
+			}
+			Post postToShow = Posts.getPostList()[index];
+			// Formatting the string of post details
+			String postDetails = "ID: " + postToShow.getPostId() + "/nAccount: " + postToShow.getStringHandle() + 
+					"/nNo. endorsements: " + numEndorsedPosts + "| No. comments: " + numComments + postToShow.getMessage();
+			return postDetails;
+					
+		}
 	}
 
 	@Override

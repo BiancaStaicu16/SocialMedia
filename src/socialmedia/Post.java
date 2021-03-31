@@ -36,4 +36,9 @@ public class Post {
     public void setPostId(int postId) {
         this.postId = postId;
     }
+    
+    public void setStringHandle(String handle) {
+    	stringHandle = handle;
+    }
+
 }
