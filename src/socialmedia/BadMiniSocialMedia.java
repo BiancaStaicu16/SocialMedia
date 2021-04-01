@@ -260,24 +260,86 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			index++;
 		}
 
-		if(!postFound){
+		if(postFound){
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		}
 
+		boolean endorsementFound = false;
+		for(Endorsement endorsement: Endorsements.getEndorsementList()){
+			if(endorsement.getOriginalPostId() == id){
+				endorsementFound = true;
+				break;
+			}
+		}
 
-		return null;
+		if(endorsementFound = true) {
+			throw new NotActionablePostException(" Endorsement posts do not have children since they are not endorsable nor commented.");
+		}
+
+		int newId = id;
+		int position = 0;
+		Comment[] commentList = Comments.getCommentList();
+		while (position < commentList.length) {
+			if (commentList[position].getOriginalPostId() == newId) {
+				newId = commentList[position].getCommentId();
+				showDetailsStringBuilder.append("|/n| > ");
+				String showDetails = showIndividualPost(id);
+				showDetailsStringBuilder.append(showDetails);
+				position = 0;
+			}
+			position++;
+		}
+		return showDetailsStringBuilder;
 	}
 
 	@Override
 	public int getMostEndorsedPost() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		int maximumValue = -100000;
+		int idOfMostEndorsedPost = 0;
+
+		for(Post post: Posts.getPostList()){
+			int count = 0;
+			int id = 0;
+			for(Endorsement endorsement: Endorsements.getEndorsementList()){
+				if(post.getPostId() == endorsement.getOriginalPostId()){
+					count++;
+					id = post.getPostId();
+				}
+			}
+			if(count > maximumValue){
+				idOfMostEndorsedPost = id;
+			}
+		}
+		return idOfMostEndorsedPost;
 	}
 
 	@Override
 	public int getMostEndorsedAccount() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		int maximumValue = -100000;
+		int idOfMostEndorsedAccount = 0;
+
+		for(Post post: Posts.getPostList()){
+			int count = 0;
+			int id = 0;
+			for(Endorsement endorsement: Endorsements.getEndorsementList()){
+				if(post.getStringHandle().equals(endorsement.getStringHandle())){
+					count++;
+				}
+			}
+
+			String newStringHandle = post.getStringHandle();
+			for(Account account: Accounts.getAccountsList()){
+				if(newStringHandle.equals(account.getStringHandle()))
+					id = account.getNumId();
+			}
+
+			if(count > maximumValue){
+				idOfMostEndorsedAccount = id;
+			}
+		}
+		return idOfMostEndorsedAccount;
 	}
 
 	@Override

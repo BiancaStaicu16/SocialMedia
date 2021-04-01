@@ -12,7 +12,6 @@ public class Account {
 		this.description = description;
 		id++;
 		numId = id;
-		
 	}
 	
 	public Account (String stringHandle) {
