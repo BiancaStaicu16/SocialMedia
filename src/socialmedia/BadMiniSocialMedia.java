@@ -165,7 +165,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		boolean postFound = false;
 		int index = 0; 
 		Post[] postList = Posts.getPostList();
-		while(index < postList.length && postFound == false) {
+		while(index < postList.length && !postFound) {
 			if(postList[index].getPostId() == id) {
 				postList[index].setMessage("The original content was removed from the system and is no longer available.");
 				postList[index].setStringHandle(null); // No longer linked to an account
@@ -175,7 +175,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			index++;
 		}
 		
-		if(postFound == false) {
+		if(!postFound) {
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		}
 		
@@ -205,13 +205,14 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		boolean postFound = false;
 		int index = 0; 
 		Post[] postList = Posts.getPostList();
-		while(index < postList.length && postFound == false) {
+		while(index < postList.length && !postFound) {
 			if(postList[index].getPostId() == id) {
 				postFound = true;
 			}
+			index++;
 		}
 		
-		if(postFound == false) {
+		if(!postFound) {
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		}
 		// If the post was found
@@ -233,7 +234,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			}
 			Post postToShow = Posts.getPostList()[index];
 			// Formatting the string of post details
-			String postDetails = "ID: " + postToShow.getPostId() + "/nAccount: " + postToShow.getStringHandle() + 
+			String postDetails = "ID: " + postToShow.getPostId() + "/nAccount: " + postToShow.getStringHandle() +
 					"/nNo. endorsements: " + numEndorsedPosts + "| No. comments: " + numComments + postToShow.getMessage();
 			return postDetails;
 					
@@ -243,7 +244,27 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	@Override
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
+
+		StringBuilder showDetailsStringBuilder = new StringBuilder();
+
+		boolean postFound = false;
+		int index = 0;
+		Post[] postList = Posts.getPostList();
+		while(index < postList.length) {
+			if(postList[index].getPostId() == id) {
+				postFound = true;
+				String showDetails = showIndividualPost(id);
+				showDetailsStringBuilder.append(showDetails);
+				return showDetailsStringBuilder;
+			}
+			index++;
+		}
+
+		if(!postFound){
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		}
+
+
 		return null;
 	}
 
