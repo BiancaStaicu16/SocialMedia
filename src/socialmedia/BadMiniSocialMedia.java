@@ -250,6 +250,8 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		boolean postFound = false;
 		int index = 0;
 		Post[] postList = Posts.getPostList();
+
+		// Looping through each post from the posts list and checking some requirements for that post to be displayed.
 		while(index < postList.length) {
 			if(postList[index].getPostId() == id) {
 				postFound = true;
@@ -260,11 +262,14 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			index++;
 		}
 
+		// If the post has not been found.
 		if(postFound){
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		}
 
 		boolean endorsementFound = false;
+
+		// Looping through the list of endorsements checking some requirements.
 		for(Endorsement endorsement: Endorsements.getEndorsementList()){
 			if(endorsement.getOriginalPostId() == id){
 				endorsementFound = true;
@@ -272,6 +277,7 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			}
 		}
 
+		// If an endorsement has not been found.
 		if(endorsementFound = true) {
 			throw new NotActionablePostException(" Endorsement posts do not have children since they are not endorsable nor commented.");
 		}
@@ -279,6 +285,8 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		int newId = id;
 		int position = 0;
 		Comment[] commentList = Comments.getCommentList();
+
+		// Looping through the list of comments checking some requirements.
 		while (position < commentList.length) {
 			if (commentList[position].getOriginalPostId() == newId) {
 				newId = commentList[position].getCommentId();
@@ -295,9 +303,11 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	@Override
 	public int getMostEndorsedPost() {
 
+		// Function that gets the most endorsed post.
 		int maximumValue = -100000;
 		int idOfMostEndorsedPost = 0;
 
+		// Looping through the list of posts and the list of endorsements, finding the most endorsed post.
 		for(Post post: Posts.getPostList()){
 			int count = 0;
 			int id = 0;
@@ -317,9 +327,11 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 	@Override
 	public int getMostEndorsedAccount() {
 
+		// Function that gets the most endorsed account.
 		int maximumValue = -100000;
 		int idOfMostEndorsedAccount = 0;
 
+		// Looping through the list of posts and the list of endorsements, finding the most endorsed account.
 		for(Post post: Posts.getPostList()){
 			int count = 0;
 			int id = 0;
@@ -330,6 +342,8 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 			}
 
 			String newStringHandle = post.getStringHandle();
+
+			// Checking requirements for most endorsed account.
 			for(Account account: Accounts.getAccountsList()){
 				if(newStringHandle.equals(account.getStringHandle()))
 					id = account.getNumId();
