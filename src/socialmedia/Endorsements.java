@@ -1,16 +1,29 @@
 package socialmedia;
 
+import java.util.ArrayList;
+
 public class Endorsements {
 	
-	private static Endorsement[] endorsementList;
+	private static ArrayList<Endorsement> endorsementList = new ArrayList<Endorsement>();
 	
 	
-	public static Endorsement[] getEndorsementList() {
+	public static ArrayList<Endorsement> getEndorsementList() {
         return endorsementList;
     }
 
     public static void addEndorsement(Endorsement item){
-        endorsementList[endorsementList.length + 1] = item;
+        endorsementList.add(item);
+    }
+    
+    public static int getEndorsementCount(String stringHandle) {
+    	int endorsementCount = 0;
+    	for(Endorsement endorsement: endorsementList) {
+    		if(endorsement.getStringHandle().equals(stringHandle)) {
+    			endorsementCount++;
+    		}
+    	}
+ 
+    	return endorsementCount;
     }
 
 }

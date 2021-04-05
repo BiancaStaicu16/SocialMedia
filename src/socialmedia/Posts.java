@@ -1,18 +1,27 @@
 package socialmedia;
 
+import java.util.ArrayList;
+
 public class Posts {
 
-    private static Post[] postList;
+    private static ArrayList<Post> postList = new ArrayList<Post>();
 
-    public static Post[] getPostList() {
+    public static ArrayList<Post> getPostList() {
         return postList;
     }
 
     public static void addPost(Post item){
-        postList[postList.length + 1] = item;
+        postList.add(item);
     }
-
-    public static void setPostList(Post[] postList) {
-        Posts.postList = postList;
+    
+    public static int getPostCount(String stringHandle) {
+    	int postCount = 0;
+    	for(Post post: postList) {
+    		if(post.getStringHandle().equals(stringHandle)) {
+    			postCount++;
+    		}
+    	}
+    	
+    	return postCount;
     }
 }

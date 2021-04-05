@@ -1,6 +1,7 @@
 package socialmedia;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -22,15 +23,17 @@ public class SocialMedia implements SocialMediaPlatform {
 			}
 		}
 
-		// If the handle already exists, throw an exception
-		for (Account account : Accounts.getAccountsList()) {
-			if (account.getStringHandle().equals(handle)) {
-				throw new IllegalHandleException("An account with this string handle already exists.");
+		if(!Accounts.getAccountsList().isEmpty()) {
+			for (Account account : Accounts.getAccountsList()) {
+				if (account.getStringHandle().equals(handle)) {
+					throw new IllegalHandleException("An account with this string handle already exists.");
+				}
 			}
 		}
-
+		// If the handle already exists, throw an exception
+		int index = 0;
 		Account firstAccount = new Account(handle);
-		Accounts.addAccount(firstAccount);
+		Accounts.addAccount(firstAccount, index);
 		return firstAccount.getNumId();
 	}
 
@@ -44,29 +47,28 @@ public class SocialMedia implements SocialMediaPlatform {
 			}
 		}
 
-		// If the handle already exists, throw an exception
-		for (Account account : Accounts.getAccountsList()) {
-			if (account.getStringHandle().equals(handle)) {
-				throw new IllegalHandleException("An account with this string handle already exists.");
+		if(!Accounts.getAccountsList().isEmpty()) {
+			for (Account account : Accounts.getAccountsList()) {
+				if (account.getStringHandle().equals(handle)) {
+					throw new IllegalHandleException("An account with this string handle already exists.");
+				}
 			}
 		}
-
-		Account firstAccount = new Account(handle,description);
-		Accounts.addAccount(firstAccount);
-		System.out.println(Arrays.toString(Accounts.getAccountsList()));
+		// If the handle already exists, throw an exception
+		int index = 0;
+		Account firstAccount = new Account(handle, description);
+		Accounts.addAccount(firstAccount, index);
 		return firstAccount.getNumId();
 	}
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
-		System.out.println(Accounts.getAccountsList().length);
 		boolean accountFound = false;
 		// Looping until the index variable reaches the length of the accounts list
-		System.out.println(Accounts.getAccountsList().length);
-		if(Accounts.getAccountsList().length > 0){
-			for(int index = 0; index < Accounts.getAccountsList().length; index++) {
+		if(Accounts.getAccountsList().size() > 0){
+			for(int index = 0; index < Accounts.getAccountsList().size(); index++) {
 				// Getting the numerical ID of each account and comparing it to the id that has been passed in
-				if (Accounts.getAccountsList()[index].getNumId() == id) {
+				if (Accounts.getAccountsList().get(index).getNumId() == id) {
 					// If the id has been found, it will be removed from the list of accounts
 					Accounts.removeAccount(index);
 					accountFound = true;
@@ -83,21 +85,68 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void removeAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		boolean accountFound = false;
+		// Looping until the index variable reaches the length of the accounts list
+		if(Accounts.getAccountsList().size() > 0){
+			for(int index = 0; index < Accounts.getAccountsList().size(); index++) {
+				// Getting the numerical ID of each account and comparing it to the id that has been passed in
+				if (Accounts.getAccountsList().get(index).getStringHandle() == handle) {
+					// If the id has been found, it will be removed from the list of accounts
+					Accounts.removeAccount(index);
+					accountFound = true;
+					break;
+				}
+			}
+		}
+		// If there is no matching ID
+		if (!accountFound){
+			throw new HandleNotRecognisedException("The handle that you have entered has not been recognised.");
+		}
 	}
 
 	@Override
 	public void changeAccountHandle(String oldHandle, String newHandle)
 			throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
+		
+		if (oldHandle == null) {
+			assert false;
+			if (oldHandle.length() >= 30 && ! oldHandle.contains(" ")) {
+				throw new InvalidHandleException("Your string handle is invalid.");
+			}
+		}
+		
+		boolean accountFound = false;
+		if(!Accounts.getAccountsList().isEmpty()) {
+			for (Account account : Accounts.getAccountsList()) {
+				if (account.getStringHandle().equals(oldHandle)) {
+					accountFound = true;
+					throw new IllegalHandleException("An account with this string handle already exists.");
+				}
+			}
+		}
+		
+		if(accountFound)
+			throw new HandleNotRecognisedException("The handle that you have entered has not been recognised.");
+		
 		Accounts.changeAccountHandle(oldHandle, newHandle);
 
 	}
 
 	@Override
 	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-
+		boolean accountFound = false;
+		if(!Accounts.getAccountsList().isEmpty()) {
+			for (Account account : Accounts.getAccountsList()) {
+				if(account.getStringHandle().equals(handle)) {
+					accountFound = true;
+					account.setDescription(description);
+				}
+			}
+		}
+		
+		if(accountFound) {
+			throw new HandleNotRecognisedException("The handle that you have entered has not been recognised.");
+		}
 	}
 
 	@Override
@@ -107,7 +156,8 @@ public class SocialMedia implements SocialMediaPlatform {
 		for(Account account: Accounts.getAccountsList()){
 			if(account.getStringHandle().equals(handle)){
 				showAnAccount = "ID: " + account.getNumId() + "\n" + "Handle: " + account.getStringHandle() + "\n"
-						+ "Description: " + account.getDescription() + "\n" + "Post count: " + "\n" + " Endorse count: " + "\n";
+						+ "Description: " + account.getDescription() + "\n" + "Post count: " + Posts.getPostCount(handle) + "\n" + 
+						"Endorse count: " + Endorsements.getEndorsementCount(handle) + "\n";
 				return showAnAccount;
 			}
 		}
@@ -126,6 +176,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		}
 
 		// Looping through each account from the accounts list and comparing their handles to the handle passed in
+		
 		for(Account account: Accounts.getAccountsList()){
 			if(account.getStringHandle().equals(handle)){
 				// If an account with a corresponding handle is found, a post is created and added to the list of posts
@@ -204,12 +255,12 @@ public class SocialMedia implements SocialMediaPlatform {
 	public void deletePost(int id) throws PostIDNotRecognisedException {
 		boolean postFound = false;
 		int index = 0;
-		Post[] postList = Posts.getPostList();
-		while(index < postList.length && !postFound) {
-			if(postList[index].getPostId() == id) {
-				postList[index].setMessage("The original content was removed from the system and is no longer available.");
-				postList[index].setStringHandle(null); // No longer linked to an account
-				postList[index].setPostId(000); // Post id changed so that the post can't be accessed using the post id
+		ArrayList<Post> postList = Posts.getPostList();
+		while(index < postList.size() && !postFound) {
+			if(postList.get(index).getPostId() == id) {
+				postList.get(index).setMessage("The original content was removed from the system and is no longer available.");
+				postList.get(index).setStringHandle(null); // No longer linked to an account
+				postList.get(index).setPostId(000); // Post id changed so that the post can't be accessed using the post id
 				postFound = true;
 			}
 			index++;
@@ -244,9 +295,9 @@ public class SocialMedia implements SocialMediaPlatform {
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
 		boolean postFound = false;
 		int index = 0;
-		Post[] postList = Posts.getPostList();
-		while(index < postList.length && !postFound) {
-			if(postList[index].getPostId() == id) {
+		ArrayList<Post> postList = Posts.getPostList();
+		while(index < postList.size() && !postFound) {
+			if(postList.get(index).getPostId() == id) {
 				postFound = true;
 			}
 			index++;
@@ -259,20 +310,20 @@ public class SocialMedia implements SocialMediaPlatform {
 		else {
 			// Finding the number of endorsed posted specific to the required post
 			int numEndorsedPosts = 0;
-			for(int num = 0; num < Endorsements.getEndorsementList().length; num++) {
-				if(Endorsements.getEndorsementList()[num].getOriginalPostId() == id) {
+			for(int num = 0; num < Endorsements.getEndorsementList().size(); num++) {
+				if(Endorsements.getEndorsementList().get(num).getOriginalPostId() == id) {
 					numEndorsedPosts++;
 				}
 			}
 
 			// Finding the number of comments under the post
 			int numComments = 0;
-			for(int count = 0; count < Comments.getCommentList().length; count++) {
-				if(Comments.getCommentList()[count].getOriginalPostId() == id) {
+			for(int count = 0; count < Comments.getCommentList().size(); count++) {
+				if(Comments.getCommentList().get(count).getOriginalPostId() == id) {
 					numComments++;
 				}
 			}
-			Post postToShow = Posts.getPostList()[index];
+			Post postToShow = Posts.getPostList().get(index);
 			// Formatting the string of post details
 			String postDetails = "ID: " + postToShow.getPostId() + "/nAccount: " + postToShow.getStringHandle() +
 					"/nNo. endorsements: " + numEndorsedPosts + "| No. comments: " + numComments + postToShow.getMessage();
@@ -288,11 +339,11 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		boolean postFound = false;
 		int index = 0;
-		Post[] postList = Posts.getPostList();
+		ArrayList<Post> postList = Posts.getPostList();
 
 		// Looping through each post from the posts list and checking some requirements for that post to be displayed.
-		while(index < postList.length) {
-			if(postList[index].getPostId() == id) {
+		while(index < postList.size()) {
+			if(postList.get(index).getPostId() == id) {
 				postFound = true;
 				String showDetails = showIndividualPost(id);
 				showDetailsStringBuilder.append(showDetails);
@@ -341,8 +392,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getNumberOfAccounts() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Accounts.getNumberOfAccounts();
 	}
 
 	@Override

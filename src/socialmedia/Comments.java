@@ -1,16 +1,17 @@
 package socialmedia;
 
+import java.util.ArrayList;
+
 public class Comments {
 	
-	private static Comment[] commentList;
+	private static ArrayList<Comment> commentList = new ArrayList<Comment>();
 	
-	
-	public static Comment[] getCommentList() {
+	public static ArrayList<Comment> getCommentList() {
         return commentList;
     }
 
     public static void addComment(Comment item){
-        commentList[commentList.length + 1] = item;
+        commentList.add(item);
     }
 
 }

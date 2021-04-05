@@ -1,32 +1,30 @@
 package socialmedia;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Accounts {
 	
-	private static Account[] accountList = new Account[10];
+	private static ArrayList<Account> accountList = new ArrayList<Account>();
+	// private static Account[] accountList = {};
 	
-	public static Account[] getAccountsList() {
+	public static ArrayList<Account> getAccountsList() {
 		return accountList;
 	}
 	
-	public int getNumberOfAccounts() {
-		return accountList.length;
+	public static int getNumberOfAccounts() {
+		return accountList.size();
 	}
 	
-	public static void addAccount(Account item) {
-		accountList[accountList.length + 1] = item;
+	public static void addAccount(Account item, int pos) {
+		accountList.add(item);
 	}
 	
 	public static void removeAccount(int index) {
-		// Converting the array to an array list
-		List<Account> tempList = Arrays.asList(accountList);
 		// Removing the item from the array list at the given index
-		tempList.remove(index);
-		// Converting back to array
-		Account[] tempArray = tempList.toArray(new Account[tempList.size()]);
-		accountList = tempArray;
+		accountList.remove(index);
+
 	}
 
 	public static void changeAccountHandle(String oldHandle, String newHandle) {
