@@ -6,9 +6,9 @@ public class Comment extends Post {
 	
 	private int commentId;
 
-    public Comment(String message, String stringHandle, int commentId) {
+    public Comment(String message, String stringHandle, int originalPostId) {
         super(message, stringHandle);
-        this.commentId = commentId;
+        this.originalPostId = originalPostId;
     }
 
     public int getCommentId() {

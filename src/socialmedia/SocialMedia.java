@@ -90,7 +90,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		if(Accounts.getAccountsList().size() > 0){
 			for(int index = 0; index < Accounts.getAccountsList().size(); index++) {
 				// Getting the numerical ID of each account and comparing it to the id that has been passed in
-				if (Accounts.getAccountsList().get(index).getStringHandle() == handle) {
+				if (Accounts.getAccountsList().get(index).getStringHandle().equals(handle)) {
 					// If the id has been found, it will be removed from the list of accounts
 					Accounts.removeAccount(index);
 					accountFound = true;
@@ -191,7 +191,8 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public int endorsePost(String handle, int id)
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
-		// Looping through each post from the posts list and checking some requirements for the post to be endorsed.
+		// Looping through each post from the posts list and checking some requirements for the post to be endorsed.\
+
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
 				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
@@ -253,7 +254,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		/*boolean postFound = false;
+		boolean postFound = false;
 		int index = 0;
 		ArrayList<Post> postList = Posts.getPostList();
 		while(index < postList.size() && !postFound) {
@@ -268,18 +269,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		if(!postFound) {
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		}*/
-
-		if(Posts.getPost(id) != null) {
-			Posts.getPost(id).setMessage("The original content was removed from the system and is no longer available.");
-			Posts.getPost(id).setStringHandle(null); // No longer linked to an account
-			Posts.getPost(id).setPostId(000); // Post id changed so that the post can't be accessed using the post id	
 		}
-		
-		if(Posts.getPost(id).equals(null)) {
-			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		}
-
 		else {
 			// Removing any associated endorsements
 			for (Endorsement endorsement: Endorsements.getEndorsementList()) {
@@ -289,7 +279,6 @@ public class SocialMedia implements SocialMediaPlatform {
 					endorsement.setPostId(000);
 				}
 			}
-
 			// Removing any associated comments
 			for (Comment comment: Comments.getCommentList()) {
 				if(comment.getOriginalPostId() == id) {
@@ -303,21 +292,17 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		/*
-		 * boolean postFound = false; ArrayList<Post> postList = Posts.getPostList();
-		 * for(Post post: postList) { if(post.getPostId() == id) { postFound = true; } }
-		 * 
-		 * if(!postFound) { throw new
-		 * PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		 * }
-		 */
-		
-		if(Posts.getPost(id).equals(null)) {
-			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		}
-		
-		// If the post was found
-		else {
+
+		  boolean postFound = false; ArrayList<Post> postList = Posts.getPostList();
+		  for(Post post: postList) {
+		  	if(post.getPostId() == id) {
+		  		postFound = true; }
+		  }
+
+		  if(!postFound) {
+		  	throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		  }
+		  else {
 			// Finding the number of endorsed posted specific to the required post
 			int numEndorsedPosts = 0;
 			for(int num = 0; num < Endorsements.getEndorsementList().size(); num++) {
@@ -407,20 +392,17 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getTotalOriginalPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Posts.getPostList().size();
 	}
 
 	@Override
 	public int getTotalEndorsmentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Endorsements.getEndorsementList().size();
 	}
 
 	@Override
 	public int getTotalCommentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Comments.getCommentList().size();
 	}
 
 	@Override

@@ -17,9 +17,7 @@ public class SocialMediaPlatformTestApp {
 	 * 
 	 * @param args not used
 	 * @throws IllegalHandleException 
-	 * @throws HandleNotRecognisedException 
-	 * @throws InvalidPostException 
-	 * @throws PostIDNotRecognisedException 
+	 * @throws HandleNotRecognisedException
 	 */
 	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException {
 		System.out.println("The system compiled and started the execution...");
@@ -36,25 +34,18 @@ public class SocialMediaPlatformTestApp {
 		try {
 			id = platform.createAccount("my_handle");
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
-			
 
-			// platform.removeAccount(id);
-			// assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
+			platform.removeAccount(id);
+
+			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
-		// } catch (AccountIDNotRecognisedException e) {
-			// assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+		 } catch (AccountIDNotRecognisedException e) {
+			 assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
 		} catch (InvalidHandleException e) {
 			e.printStackTrace();
 		}
-
-		int firstPost = platform.createPost("my_handle", "This is bullshit");
-		int secondPost = platform.createPost("my_handle", "I want to cry");
-		System.out.println(platform.showIndividualPost(firstPost));
-		System.out.println();
-		System.out.println(platform.showIndividualPost(secondPost));
-	
 	}
 
 }
