@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Accounts {
 	
-	private static Account[] accountList;
+	private static Account[] accountList = new Account[10];
 	
 	public static Account[] getAccountsList() {
 		return accountList;

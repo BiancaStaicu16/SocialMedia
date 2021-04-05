@@ -21,7 +21,7 @@ public class SocialMediaPlatformTestApp {
 		System.out.println("The system compiled and started the execution...");
 
 
-		MiniSocialMediaPlatform platform = new BadMiniSocialMedia();
+		SocialMediaPlatform platform = new SocialMedia();
 
 		assert (platform.getNumberOfAccounts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalOriginalPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
