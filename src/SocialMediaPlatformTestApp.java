@@ -18,13 +18,10 @@ public class SocialMediaPlatformTestApp {
 	 * @param args not used
 	 */
 	public static void main(String[] args) {
-		System.out.println("This is a piece of shit!!");
-		System.out.println("I want to cry");
-		System.out.println("I agree");
 		System.out.println("The system compiled and started the execution...");
 
 
-		SocialMediaPlatform platform = new BadSocialMedia();
+		MiniSocialMediaPlatform platform = new BadMiniSocialMedia();
 
 		assert (platform.getNumberOfAccounts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 		assert (platform.getTotalOriginalPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
