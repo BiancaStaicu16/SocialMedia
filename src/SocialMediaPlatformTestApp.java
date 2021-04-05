@@ -36,7 +36,6 @@ public class SocialMediaPlatformTestApp {
 		try {
 			id = platform.createAccount("my_handle");
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
-			System.out.println(id);
 			
 
 			// platform.removeAccount(id);
@@ -50,8 +49,11 @@ public class SocialMediaPlatformTestApp {
 			e.printStackTrace();
 		}
 
-		platform.createPost("my_handle", "This is bullshit");
-		System.out.println(platform.showIndividualPost(0));
+		int postId = platform.createPost("my_handle", "This is bullshit");
+		int secondPost = platform.createPost("my_handle", "I want to cry");
+		System.out.println(platform.showIndividualPost(postId));
+		System.out.println();
+		System.out.println(platform.showIndividualPost(secondPost));
 	}
 
 }

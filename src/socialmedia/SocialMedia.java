@@ -296,11 +296,10 @@ public class SocialMedia implements SocialMediaPlatform {
 		boolean postFound = false;
 		int index = 0;
 		ArrayList<Post> postList = Posts.getPostList();
-		while(index < postList.size() && !postFound) {
-			if(postList.get(index).getPostId() == id) {
+		for(Post post: postList) {
+			if(post.getPostId() == id) {
 				postFound = true;
 			}
-			index++;
 		}
 
 		if(!postFound) {
@@ -325,8 +324,8 @@ public class SocialMedia implements SocialMediaPlatform {
 			}
 			Post postToShow = Posts.getPostList().get(index);
 			// Formatting the string of post details
-			String postDetails = "ID: " + postToShow.getPostId() + "/nAccount: " + postToShow.getStringHandle() +
-					"/nNo. endorsements: " + numEndorsedPosts + "| No. comments: " + numComments + postToShow.getMessage();
+			String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
+					"\nNo. endorsements: " + numEndorsedPosts + "| No. comments: " + numComments + postToShow.getMessage();
 			return postDetails;
 
 		}
@@ -374,12 +373,12 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		int newId = id;
 		int position = 0;
-		Comment[] commentList = Comments.getCommentList();
+		ArrayList<Comment> commentList = Comments.getCommentList();
 
 		// Looping through the list of comments checking some requirements.
-		while (position < commentList.length) {
-			if (commentList[position].getOriginalPostId() == newId) {
-				newId = commentList[position].getCommentId();
+		while (position < commentList.size()) {
+			if (commentList.get(position).getOriginalPostId() == newId) {
+				newId = commentList.get(position).getCommentId();
 				showDetailsStringBuilder.append("|/n| > ");
 				String showDetails = showIndividualPost(id);
 				showDetailsStringBuilder.append(showDetails);

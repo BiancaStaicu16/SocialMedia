@@ -13,8 +13,9 @@ public class Post {
     public Post( String message, String stringHandle){
         this.message = message;
         this.stringHandle = stringHandle;
-        this.postId = id;
         id++;
+        postId = id;
+        
     }
 
     public String getStringHandle() {
