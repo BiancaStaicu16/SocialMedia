@@ -15,6 +15,7 @@ public class Endorsements {
         endorsementList.add(item);
     }
     
+    
     public static int getEndorsementCount(String stringHandle) {
     	int endorsementCount = 0;
     	for(Endorsement endorsement: endorsementList) {

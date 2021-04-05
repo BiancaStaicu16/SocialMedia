@@ -49,11 +49,12 @@ public class SocialMediaPlatformTestApp {
 			e.printStackTrace();
 		}
 
-		int postId = platform.createPost("my_handle", "This is bullshit");
+		int firstPost = platform.createPost("my_handle", "This is bullshit");
 		int secondPost = platform.createPost("my_handle", "I want to cry");
-		System.out.println(platform.showIndividualPost(postId));
+		System.out.println(platform.showIndividualPost(firstPost));
 		System.out.println();
 		System.out.println(platform.showIndividualPost(secondPost));
+	
 	}
 
 }

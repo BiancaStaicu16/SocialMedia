@@ -253,7 +253,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		boolean postFound = false;
+		/*boolean postFound = false;
 		int index = 0;
 		ArrayList<Post> postList = Posts.getPostList();
 		while(index < postList.size() && !postFound) {
@@ -267,6 +267,16 @@ public class SocialMedia implements SocialMediaPlatform {
 		}
 
 		if(!postFound) {
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		}*/
+
+		if(Posts.getPost(id) != null) {
+			Posts.getPost(id).setMessage("The original content was removed from the system and is no longer available.");
+			Posts.getPost(id).setStringHandle(null); // No longer linked to an account
+			Posts.getPost(id).setPostId(000); // Post id changed so that the post can't be accessed using the post id	
+		}
+		
+		if(Posts.getPost(id).equals(null)) {
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		}
 
@@ -293,18 +303,19 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		boolean postFound = false;
-		int index = 0;
-		ArrayList<Post> postList = Posts.getPostList();
-		for(Post post: postList) {
-			if(post.getPostId() == id) {
-				postFound = true;
-			}
-		}
-
-		if(!postFound) {
+		/*
+		 * boolean postFound = false; ArrayList<Post> postList = Posts.getPostList();
+		 * for(Post post: postList) { if(post.getPostId() == id) { postFound = true; } }
+		 * 
+		 * if(!postFound) { throw new
+		 * PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		 * }
+		 */
+		
+		if(Posts.getPost(id).equals(null)) {
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		}
+		
 		// If the post was found
 		else {
 			// Finding the number of endorsed posted specific to the required post
@@ -322,10 +333,10 @@ public class SocialMedia implements SocialMediaPlatform {
 					numComments++;
 				}
 			}
-			Post postToShow = Posts.getPostList().get(index);
+			Post postToShow = Posts.getPost(id); // Returns a post with the corresponding id
 			// Formatting the string of post details
 			String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
-					"\nNo. endorsements: " + numEndorsedPosts + "| No. comments: " + numComments + postToShow.getMessage();
+					"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
 			return postDetails;
 
 		}

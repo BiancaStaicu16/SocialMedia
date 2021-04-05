@@ -14,6 +14,15 @@ public class Posts {
         postList.add(item);
     }
     
+    public static Post getPost (int id) {
+    	for(Post post: postList) {
+    		if(post.getPostId() == id) {
+    			return post;
+    		}
+    	}
+    	return null; // If the post hasn't been found
+    }
+    
     public static int getPostCount(String stringHandle) {
     	int postCount = 0;
     	for(Post post: postList) {
