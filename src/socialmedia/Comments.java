@@ -13,5 +13,14 @@ public class Comments {
     public static void addComment(Comment item){
         commentList.add(item);
     }
+    
+    public static Comment getComment(int id) {
+    	for(Comment comment: commentList) {
+    		if(comment.getOriginalPostId() == id) {
+    			return comment;
+    		}
+    	}
+    	return null; // If the comment wasn't found
+    }
 
 }

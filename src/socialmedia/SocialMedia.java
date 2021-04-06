@@ -331,57 +331,12 @@ public class SocialMedia implements SocialMediaPlatform {
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
 		StringBuilder showDetailsStringBuilder = new StringBuilder();
+		
+		String showDetails = showIndividualPost(id);
+		showDetailsStringBuilder.append(showDetails);
+		Comment thisComment = Comments.getComment(id);
+		showDetailsStringBuilder.append(thisComment);
 
-		boolean postFound = false;
-		int index = 0;
-		ArrayList<Post> postList = Posts.getPostList();
-
-		// Looping through each post from the posts list and checking some requirements for that post to be displayed.
-		while(index < postList.size()) {
-			if(postList.get(index).getPostId() == id) {
-				postFound = true;
-				String showDetails = showIndividualPost(id);
-				showDetailsStringBuilder.append(showDetails);
-				return showDetailsStringBuilder;
-			}
-			index++;
-		}
-
-		// If the post has not been found.
-		if(postFound){
-			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		}
-
-		boolean endorsementFound = false;
-
-		// Looping through the list of endorsements checking some requirements.
-		for(Endorsement endorsement: Endorsements.getEndorsementList()){
-			if(endorsement.getOriginalPostId() == id){
-				endorsementFound = true;
-				break;
-			}
-		}
-
-		// If an endorsement has not been found.
-		if(endorsementFound = true) {
-			throw new NotActionablePostException(" Endorsement posts do not have children since they are not endorsable nor commented.");
-		}
-
-		int newId = id;
-		int position = 0;
-		ArrayList<Comment> commentList = Comments.getCommentList();
-
-		// Looping through the list of comments checking some requirements.
-		while (position < commentList.size()) {
-			if (commentList.get(position).getOriginalPostId() == newId) {
-				newId = commentList.get(position).getCommentId();
-				showDetailsStringBuilder.append("|/n| > ");
-				String showDetails = showIndividualPost(id);
-				showDetailsStringBuilder.append(showDetails);
-				position = 0;
-			}
-			position++;
-		}
 		return showDetailsStringBuilder;
 	}
 

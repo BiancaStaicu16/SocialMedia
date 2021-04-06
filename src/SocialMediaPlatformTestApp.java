@@ -18,8 +18,9 @@ public class SocialMediaPlatformTestApp {
 	 * @param args not used
 	 * @throws IllegalHandleException 
 	 * @throws HandleNotRecognisedException
+	 * @throws NotActionablePostException 
 	 */
-	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException {
+	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException, NotActionablePostException {
 		System.out.println("The system compiled and started the execution...");
 
 
@@ -35,8 +36,13 @@ public class SocialMediaPlatformTestApp {
 			id = platform.createAccount("my_handle");
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 
+			int newPost = platform.createPost("my_handle", "Hello");
+			
+			int newEndorsement = platform.endorsePost("my_handle", newPost);
+			int newComment = platform.commentPost("my_handle", newPost, "Bye");
+			System.out.println(platform.showPostChildrenDetails(newPost));
+			
 			platform.removeAccount(id);
-
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
 		} catch (IllegalHandleException e) {
