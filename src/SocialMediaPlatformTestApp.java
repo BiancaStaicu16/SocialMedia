@@ -39,9 +39,12 @@ public class SocialMediaPlatformTestApp {
 			int newPost = platform.createPost("my_handle", "Hello");
 			
 			int newEndorsement = platform.endorsePost("my_handle", newPost);
-			int newComment = platform.commentPost("my_handle", newPost, "Bye");
-			System.out.println(platform.showPostChildrenDetails(newPost));
-			
+			int newComment = platform.commentPost("my_handle", 1, "blah");
+			System.out.println(newComment);
+			System.out.println(newEndorsement);
+			platform.showIndividualPost(1);
+
+
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 

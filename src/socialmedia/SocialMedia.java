@@ -3,6 +3,7 @@ package socialmedia;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
@@ -293,44 +294,66 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
 
-		  boolean postFound = false; ArrayList<Post> postList = Posts.getPostList();
-		  for(Post post: postList) {
-		  	if(post.getPostId() == id) {
-		  		postFound = true; }
+		  boolean postFound = false;
+		  ArrayList<Post> postList = Posts.getPostList();
+		  ArrayList<Comment> commentList = Comments.getCommentList();
+		  ArrayList<Endorsement> endorsementList = Endorsements.getEndorsementList();
+
+		  for(Post post: postList){
+		  	if(post.getPostId() == id)
+		  		postFound = true;
 		  }
 
-		  if(!postFound) {
-		  	throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		  }
-		  else {
+		  if(postFound){
 		  	int numEndorsedPosts = 0;
 		  	int numComments = 0;
-			  if(postFound) {
-				  for (int count = 0; count < Comments.getCommentList().size(); count++) {
-					  if (Comments.getCommentList().get(count).getOriginalPostId() == id) {
-						  numComments++;
-						  String commentDetails = "ID: " + Comments.getCommentList().get(count).getCommentId() + "\nAccount: " + Comments.getCommentList().get(count).getStringHandle() +
-								  "\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + Comments.getCommentList().get(count).getMessage();
-						  return commentDetails;
-					  }
-				  }
-			  }
 
-
-			// Finding the number of endorsed posted specific to the required post
-//			int numEndorsedPosts = 0;
-			for(int num = 0; num < Endorsements.getEndorsementList().size(); num++) {
-				if(Endorsements.getEndorsementList().get(num).getOriginalPostId() == id) {
-					numEndorsedPosts++;
+		  	for(Endorsement endorsement: endorsementList){
+		  		if(endorsement.getOriginalPostId() == id){
+		  			numEndorsedPosts++;
 				}
 			}
 
-			Post postToShow = Posts.getPost(id); // Returns a post with the corresponding id
-			// Formatting the string of post details
-			String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
-					"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
-			return postDetails;
-		}
+		  	for(Comment comment: commentList){
+		  		if(comment.getOriginalPostId() == id){
+		  			numComments++;
+				}
+			}
+			System.out.println("simona");
+		  	Post postToShow = Posts.getPost(id);
+		  	assert postToShow != null;
+		  	String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
+					  "\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
+		  	List<String> listOfStringsToShow = new ArrayList();
+
+
+		  	listOfStringsToShow.add(postDetails);
+
+		  	int numCommentsVariable = numComments;
+
+		  	while (numCommentsVariable > 0){
+		  		System.out.println("Buni");
+		  		Comment commentToShow = Comments.getComment(id);
+				assert commentToShow != null;
+				String commentDetails = "ID: " + commentToShow.getPostId() + "\nAccount: " + commentToShow.getStringHandle() +
+						"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + commentToShow.getMessage();
+				listOfStringsToShow.add(commentDetails);
+		  		numCommentsVariable--;
+			}
+			System.out.println("mama");
+		  	System.out.println(listOfStringsToShow.size());
+		  	System.out.println(listOfStringsToShow.get(0));
+		  	System.out.println(listOfStringsToShow.get(1));
+		  	for(String s: listOfStringsToShow){
+
+		  		return s;
+			}
+		  }
+		  else {
+			  throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		  }
+
+		return null;
 	}
 
 	@Override
