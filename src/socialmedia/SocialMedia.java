@@ -303,27 +303,33 @@ public class SocialMedia implements SocialMediaPlatform {
 		  	throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		  }
 		  else {
+		  	int numEndorsedPosts = 0;
+		  	int numComments = 0;
+			  if(postFound) {
+				  for (int count = 0; count < Comments.getCommentList().size(); count++) {
+					  if (Comments.getCommentList().get(count).getOriginalPostId() == id) {
+						  numComments++;
+						  String commentDetails = "ID: " + Comments.getCommentList().get(count).getCommentId() + "\nAccount: " + Comments.getCommentList().get(count).getStringHandle() +
+								  "\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + Comments.getCommentList().get(count).getMessage();
+						  return commentDetails;
+					  }
+				  }
+			  }
+
+
 			// Finding the number of endorsed posted specific to the required post
-			int numEndorsedPosts = 0;
+//			int numEndorsedPosts = 0;
 			for(int num = 0; num < Endorsements.getEndorsementList().size(); num++) {
 				if(Endorsements.getEndorsementList().get(num).getOriginalPostId() == id) {
 					numEndorsedPosts++;
 				}
 			}
 
-			// Finding the number of comments under the post
-			int numComments = 0;
-			for(int count = 0; count < Comments.getCommentList().size(); count++) {
-				if(Comments.getCommentList().get(count).getOriginalPostId() == id) {
-					numComments++;
-				}
-			}
 			Post postToShow = Posts.getPost(id); // Returns a post with the corresponding id
 			// Formatting the string of post details
 			String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
 					"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
 			return postDetails;
-
 		}
 	}
 
@@ -331,11 +337,14 @@ public class SocialMedia implements SocialMediaPlatform {
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
 		StringBuilder showDetailsStringBuilder = new StringBuilder();
-		
+
 		String showDetails = showIndividualPost(id);
 		showDetailsStringBuilder.append(showDetails);
 		Comment thisComment = Comments.getComment(id);
-		showDetailsStringBuilder.append(thisComment);
+		if(thisComment == null)
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		String showDetailsOfComment = showIndividualPost(thisComment.getOriginalPostId());
+		showDetailsStringBuilder.append(showDetailsOfComment);
 
 		return showDetailsStringBuilder;
 	}

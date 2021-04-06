@@ -22,5 +22,4 @@ public class Comments {
     	}
     	return null; // If the comment wasn't found
     }
-
 }
