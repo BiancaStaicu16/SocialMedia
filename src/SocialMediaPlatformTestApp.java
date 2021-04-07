@@ -32,13 +32,18 @@ public class SocialMediaPlatformTestApp {
 		assert (platform.getTotalEndorsmentPosts() == 0) : "Innitial SocialMediaPlatform not empty as required.";
 
 		Integer id;
+		Integer id1;
 		try {
 			id = platform.createAccount("my_handle");
+			id1 = platform.createAccount("Bianca");
 			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 
 			int newPost = platform.createPost("my_handle", "Hello");
+			int newPost1 = platform.createPost("Bianca", "hotz");
 			int newEndorsement = platform.endorsePost("my_handle", newPost);
 			int newComment = platform.commentPost("my_handle", 1, "blah");
+			int newend = platform.endorsePost("Bianca", newPost1);
+			int ngfghj = platform.endorsePost("Bianca", newPost1);
 
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";

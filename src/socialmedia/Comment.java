@@ -11,9 +11,9 @@ public class Comment extends Post {
         this.originalPostId = originalPostId;
     }
 
-    public int getCommentId() {
-        return commentId;
-    }
+   public int getCommentId(){
+        return this.commentId;
+   }
     
     public int getOriginalPostId() {
     	return originalPostId;

@@ -16,12 +16,21 @@ public class Comments {
     
     public static Comment getComment(int id) {
     	for(Comment comment: commentList) {
-    		if(comment.getOriginalPostId() == id) {
+    		if(comment.getCommentId() == id) {
     			return comment;
     		}
     	}
     	return null; // If the comment wasn't found
     }
+
+    public static int getCommentId(int id){
+		for(Comment comment: commentList) {
+			if(comment.getCommentId() == id) {
+				return comment.getCommentId();
+			}
+		}
+		return 0;
+	}
 
 	public static int getCommentCount(int originalId) {
 		int numComments = 0;

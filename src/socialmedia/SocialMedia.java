@@ -194,8 +194,10 @@ public class SocialMedia implements SocialMediaPlatform {
 			throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException {
 		// Looping through each post from the posts list and checking some requirements for the post to be endorsed.\
 
+		boolean postFound = false;
 		for (Post post: Posts.getPostList()) {
 			if(post.getPostId() == id && post.getStringHandle().equals(handle) && !post.getMessage().contains("EP@")) {
+				postFound = true;
 				String endorsedMessage = "EP@" + post.getStringHandle() + ": " + post.getMessage();
 				Endorsement firstEndorsement = new Endorsement(endorsedMessage, handle, id);
 				int initialPostId = firstEndorsement.getPostId();
@@ -203,9 +205,11 @@ public class SocialMedia implements SocialMediaPlatform {
 				Endorsements.addEndorsement(firstEndorsement);
 				return firstEndorsement.getPostId();
 			}
-
+		}
+		if(postFound == false){
+			Post post = Posts.getPost(id);
 			// Throwing exceptions for invalid requirements.
-			else if(post.getPostId() != id ) {
+			 if(post.getPostId() != id ) {
 				throw new PostIDNotRecognisedException("The post ID entered has not been found.");
 			}
 			else if(!post.getStringHandle().equals(handle) ) {
@@ -213,8 +217,8 @@ public class SocialMedia implements SocialMediaPlatform {
 			}
 			else if(post.getMessage().contains("EP@")) {
 				throw new NotActionablePostException("This post cannot be endorsed.");
+				}
 			}
-		}
 		return 0;
 	}
 
@@ -296,30 +300,30 @@ public class SocialMedia implements SocialMediaPlatform {
 
 
 
-		if(Posts.getPost(id) == null) {
-			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		}
-
-
-		else {
-			// If any comments exist for the post
-			if(Comments.getOriginalCommentID(id) != null) {
-				Comment postsComment = Comments.getOriginalCommentID(id);
-				int postID = postsComment.getPostId();
-				int endorsementNum = Endorsements.getEndorsementCount(postID); // Gets endorsement count of the comment
-				int commentNum = Comments.getCommentCount(postID); // Gets endorsement count of the comment
-				System.out.println(endorsementNum + " " + commentNum);
-			}
-
+		if(Posts.getPost(id) != null){
 			int numEndorsedPosts = Endorsements.getEndorsementCount(id);
 			int numComments = Comments.getCommentCount(id);
 
 			Post postToShow = Posts.getPost(id);
 			String postDetails = "ID: " +postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
 					"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
-			return postDetails;
+			return postDetails; }
 
+		else if(Comments.getCommentId(id) != 0) {
+			int endorsementNum = Endorsements.getEndorsementCount(id); // Gets endorsement count of the comment
+			int commentNum = Comments.getCommentCount(id);
+			Comment comment = Comments.getComment(id);
+
+			String commentDetails = "ID: " + id + "\nAccount: " + comment.getStringHandle() +
+					"\nNo. endorsements: " + endorsementNum + " | No. comments: " + commentNum + "\n" + comment.getMessage();
+			return commentDetails;
 		}
+
+		if(Posts.getPost(id) == null) {
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		}
+
+		return null;
 	}
 
 	@Override
@@ -327,18 +331,47 @@ public class SocialMedia implements SocialMediaPlatform {
 			throws PostIDNotRecognisedException, NotActionablePostException {
 		StringBuilder showDetailsStringBuilder = new StringBuilder();
 
-
-
 		String showDetails = showIndividualPost(id);
+
 		showDetailsStringBuilder.append(showDetails);
+
 		Comment thisComment = Comments.getOriginalCommentID(id);
+
 		if(thisComment == null)
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		String showDetailsOfComment = showIndividualPost(thisComment.getOriginalPostId());
-		showDetailsStringBuilder.append(showDetailsOfComment);
+
+		String pipeFormatting = "\n" + "|" + "\n" + "| > ";
+		boolean commentExist = true;
+		int countIndentation = 0;
+
+		while (commentExist){
+			countIndentation++;
+			String tabs = "\t";
+			String totalIndentations = tabs.repeat(countIndentation);
 
 
 
+
+
+			showDetailsStringBuilder.append(pipeFormatting);
+			int currentCommentId = thisComment.getCommentId();
+			String showDetailsOfComment = showIndividualPost(currentCommentId);
+			String newShowDetailsOfComment = new String();
+			for (int i = 0; i < showDetailsOfComment.length(); i++){
+				char c = showDetailsOfComment.charAt(i);
+				newShowDetailsOfComment += (showDetailsOfComment.charAt(i));
+
+				if(c == '\n'){
+					newShowDetailsOfComment += totalIndentations;
+				}
+			}
+
+			showDetailsStringBuilder.append(newShowDetailsOfComment);
+
+			if(Comments.getOriginalCommentID(currentCommentId) == null){
+				commentExist = false;
+			}
+		}
 		return showDetailsStringBuilder;
 	}
 
