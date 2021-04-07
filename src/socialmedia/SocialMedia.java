@@ -319,41 +319,16 @@ public class SocialMedia implements SocialMediaPlatform {
 		  			numComments++;
 				}
 			}
-			System.out.println("simona");
 		  	Post postToShow = Posts.getPost(id);
 		  	assert postToShow != null;
 		  	String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
 					  "\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
-		  	List<String> listOfStringsToShow = new ArrayList();
-
-
-		  	listOfStringsToShow.add(postDetails);
-
-		  	int numCommentsVariable = numComments;
-
-		  	while (numCommentsVariable > 0){
-		  		System.out.println("Buni");
-		  		Comment commentToShow = Comments.getComment(id);
-				assert commentToShow != null;
-				String commentDetails = "ID: " + commentToShow.getPostId() + "\nAccount: " + commentToShow.getStringHandle() +
-						"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + commentToShow.getMessage();
-				listOfStringsToShow.add(commentDetails);
-		  		numCommentsVariable--;
+		  	return postDetails;
 			}
-			System.out.println("mama");
-		  	System.out.println(listOfStringsToShow.size());
-		  	System.out.println(listOfStringsToShow.get(0));
-		  	System.out.println(listOfStringsToShow.get(1));
-		  	for(String s: listOfStringsToShow){
 
-		  		return s;
-			}
-		  }
 		  else {
 			  throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		  }
-
-		return null;
 	}
 
 	@Override
