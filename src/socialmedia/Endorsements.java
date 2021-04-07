@@ -27,4 +27,16 @@ public class Endorsements {
     	return endorsementCount;
     }
 
+	public static int getEndorsementCount (int originalId) {
+		int endorsementCount = 0;
+		for(Endorsement endorsement: endorsementList) {
+			if(endorsement.getOriginalPostId() == originalId) {
+				endorsementCount++;
+			}
+		}
+
+		return endorsementCount;
+	}
+
+
 }

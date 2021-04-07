@@ -22,4 +22,23 @@ public class Comments {
     	}
     	return null; // If the comment wasn't found
     }
+
+	public static int getCommentCount(int originalId) {
+		int numComments = 0;
+		for(Comment comment: Comments.getCommentList()){
+			if(comment.getOriginalPostId() == originalId){
+				numComments++;
+			}
+		}
+		return numComments;
+	}
+
+	public static Comment getOriginalCommentID(int originalId) {
+		for(Comment comment: commentList) {
+			if(comment.getOriginalPostId() == originalId) {
+				return comment;
+			}
+		}
+		return null; // If the comment wasn't found
+	}
 }

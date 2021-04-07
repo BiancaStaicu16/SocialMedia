@@ -294,41 +294,32 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
 
-		  boolean postFound = false;
-		  ArrayList<Post> postList = Posts.getPostList();
-		  ArrayList<Comment> commentList = Comments.getCommentList();
-		  ArrayList<Endorsement> endorsementList = Endorsements.getEndorsementList();
 
-		  for(Post post: postList){
-		  	if(post.getPostId() == id)
-		  		postFound = true;
-		  }
 
-		  if(postFound){
-		  	int numEndorsedPosts = 0;
-		  	int numComments = 0;
+		if(Posts.getPost(id) == null) {
+			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
+		}
 
-		  	for(Endorsement endorsement: endorsementList){
-		  		if(endorsement.getOriginalPostId() == id){
-		  			numEndorsedPosts++;
-				}
+
+		else {
+			// If any comments exist for the post
+			if(Comments.getOriginalCommentID(id) != null) {
+				Comment postsComment = Comments.getOriginalCommentID(id);
+				int postID = postsComment.getPostId();
+				int endorsementNum = Endorsements.getEndorsementCount(postID); // Gets endorsement count of the comment
+				int commentNum = Comments.getCommentCount(postID); // Gets endorsement count of the comment
+				System.out.println(endorsementNum + " " + commentNum);
 			}
 
-		  	for(Comment comment: commentList){
-		  		if(comment.getOriginalPostId() == id){
-		  			numComments++;
-				}
-			}
-		  	Post postToShow = Posts.getPost(id);
-		  	assert postToShow != null;
-		  	String postDetails = "ID: " + postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
-					  "\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
-		  	return postDetails;
-			}
+			int numEndorsedPosts = Endorsements.getEndorsementCount(id);
+			int numComments = Comments.getCommentCount(id);
 
-		  else {
-			  throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
-		  }
+			Post postToShow = Posts.getPost(id);
+			String postDetails = "ID: " +postToShow.getPostId() + "\nAccount: " + postToShow.getStringHandle() +
+					"\nNo. endorsements: " + numEndorsedPosts + " | No. comments: " + numComments + "\n" + postToShow.getMessage();
+			return postDetails;
+
+		}
 	}
 
 	@Override
@@ -336,16 +327,21 @@ public class SocialMedia implements SocialMediaPlatform {
 			throws PostIDNotRecognisedException, NotActionablePostException {
 		StringBuilder showDetailsStringBuilder = new StringBuilder();
 
+
+
 		String showDetails = showIndividualPost(id);
 		showDetailsStringBuilder.append(showDetails);
-		Comment thisComment = Comments.getComment(id);
+		Comment thisComment = Comments.getOriginalCommentID(id);
 		if(thisComment == null)
 			throw new PostIDNotRecognisedException("The post ID entered has not been recognised.");
 		String showDetailsOfComment = showIndividualPost(thisComment.getOriginalPostId());
 		showDetailsStringBuilder.append(showDetailsOfComment);
 
+
+
 		return showDetailsStringBuilder;
 	}
+
 
 	@Override
 	public int getNumberOfAccounts() {
