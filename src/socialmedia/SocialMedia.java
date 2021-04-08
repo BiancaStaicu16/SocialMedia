@@ -298,8 +298,6 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
 
-
-
 		if(Posts.getPost(id) != null){
 			int numEndorsedPosts = Endorsements.getEndorsementCount(id);
 			int numComments = Comments.getCommentCount(id);
@@ -457,7 +455,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		Posts.clearPosts();
 		Comments.clearComments();
 		Accounts.clearAccounts();
-
 	}
 
 	@Override
@@ -474,28 +471,18 @@ public class SocialMedia implements SocialMediaPlatform {
 		System.out.println("Object has been serialized"); 
 		} 
 		catch(Exception e){ } 
-		} 
+	}
 
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
-
-		ArrayList<Endorsement> endorsementList = Endorsements.getEndorsementList();
-		try {
-			System.out.println("nooooooo");
-			FileInputStream file = new FileInputStream(filename); // Creates an output file with a given file path
-			System.out.println("nooooooopppppppppppppppppppp");
-			ObjectInputStream out = new ObjectInputStream(file); // Writing primitive data types to a stream of bytes
-			System.out.println("noooooootttttttttttttttttttttttttt");
-
-//			System.out.println("nooooooobbbbbbbbbbbbbbbbbbbbbb");
-			out.close(); // Closes the byte stream
-			file.close(); // Closes the file stream
-
-			System.out.println("Object has been deserialized");
-		}
-		catch(Exception e){
-			System.out.println("nlah");
-		}
+		
+	  FileInputStream fis = new FileInputStream("t.tmp");
+	  ObjectInputStream ois = new ObjectInputStream(fis);
+	
+	  int i = ois.readInt();
+	  String today = (String) ois.readObject();
+	  Date date = (Date) ois.readObject();
+	
+	  ois.close();
 	}
-}
