@@ -31,4 +31,10 @@ public class Comment extends Post {
     public void setMessage(String message){
         super.setMessage(message);
     }
+    
+    public String toString() {
+    	
+    	return "Original Post ID: " + originalPostId + " Comment ID: " + commentId;
+
+    }
 }

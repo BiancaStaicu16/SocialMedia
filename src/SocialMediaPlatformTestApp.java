@@ -48,7 +48,8 @@ public class SocialMediaPlatformTestApp {
 			int newComment = platform.commentPost("my_handle", 1, "blah");
 			int newend = platform.endorsePost("Bianca", newPost1);
 			int ngfghj = platform.endorsePost("Bianca", newPost1);
-			String filename = "C:\\Users\\bianc\\OneDrive\\Desktop\\CA3\\SocialMedia\\filename";
+			// String filename = "C:\\Users\\bianc\\OneDrive\\Desktop\\CA3\\SocialMedia\\filename";
+			String filename = "filename";
 			platform.savePlatform(filename);
 			platform.loadPlatform(filename);
 			

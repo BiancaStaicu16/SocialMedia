@@ -461,28 +461,54 @@ public class SocialMedia implements SocialMediaPlatform {
 	public void savePlatform(String filename) throws IOException {
 		
 		ArrayList<Endorsement> endorsementList = Endorsements.getEndorsementList();
-		try { 
-		FileOutputStream file = new FileOutputStream(filename); // Creates an output file with a given file path
-		ObjectOutputStream out = new ObjectOutputStream(file); // Writing primitive data types to a stream of bytes
-		out.writeObject(endorsementList); //For Serialization (use readObject() for deserializtion) 
-		out.close(); // Closes the byte stream
-		file.close(); // Closes the file stream
+		ArrayList<Comment> commentList = Comments.getCommentList();
+		ArrayList<Post> postList = Posts.getPostList();
+		ArrayList<Account> accountList = Accounts.getAccountsList();
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+			out.writeObject(endorsementList); 
+			out.writeObject(commentList);
+			out.writeObject(postList);
+			System.out.println("SERIALIZED");
+		}
+		
+		catch(Exception e) {System.out.println("Yes");}
 		 
-		System.out.println("Object has been serialized"); 
-		} 
-		catch(Exception e){ } 
 	}
 
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
 		
-	  FileInputStream fis = new FileInputStream("t.tmp");
-	  ObjectInputStream ois = new ObjectInputStream(fis);
-	
-	  int i = ois.readInt();
-	  String today = (String) ois.readObject();
-	  Date date = (Date) ois.readObject();
-	
-	  ois.close();
+	  ArrayList<Endorsement> endorsementList = null;
+	  ArrayList<Comment> commentList = null;
+	  ArrayList<Post> postList = null;
+	  ArrayList<Account> accountList = null;
+	  try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))){
+		  
+		  Object objectOne = in.readObject();
+		  if(objectOne instanceof ArrayList<Endorsement>) {
+			  endorsementList = (ArrayList<Endorsement>) objectOne;
+		  }
+		  
+		  Object objectTwo = in.readObject();
+		  if(objectTwo instanceof ArrayList<Comment>) {
+			  commentList = (ArrayList<Comment>) objectTwo;
+		  }
+		  
+		  Object objectThree = in.readObject();
+		  if(objectThree instanceof ArrayList<Post>) {
+			  postList = (ArrayList<Post>)objectThree;
+		  }
+		  
+		  Object objectFour = in.readObject();
+		  if(objectFour instanceof ArrayList<Account>) {
+			  accountList = (ArrayList<Account>)objectFour;
+		  }
+		  
+
+	  }
+	  
+	  catch (Exception e) {System.out.println("Error");}
+	  
 	}
+}

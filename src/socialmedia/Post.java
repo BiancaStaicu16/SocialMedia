@@ -1,6 +1,8 @@
 package socialmedia;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
 
     private static int id = 0;
 

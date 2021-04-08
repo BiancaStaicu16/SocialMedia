@@ -31,5 +31,10 @@ public class Endorsement extends Post{
     public void setEndorsementId(int id) {
     	endorsementId = id;
     }
+    
+    public String toString() {
+    	
+    	return "Original Post ID: " + originalPostId + " Endorsement ID: " + endorsementId;
+    }
 
 }
