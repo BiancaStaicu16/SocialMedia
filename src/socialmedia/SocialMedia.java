@@ -1,8 +1,6 @@
 package socialmedia;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -481,17 +479,23 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
-		
-		try {
-		    FileInputStream streamIn = new FileInputStream(filename);
-		    objectinputstream = new ObjectInputStream(streamIn);
-		    ArrayList<Endorsement> endorsmentList = (ArrayList<Endorsement>) objectinputstream.readObject();
-		    // recordList.add(readCase);
-		    System.out.println(endorsmentList);
-		} catch (Exception e) {
-		    e.printStackTrace();
 
+		ArrayList<Endorsement> endorsementList = Endorsements.getEndorsementList();
+		try {
+			System.out.println("nooooooo");
+			FileInputStream file = new FileInputStream(filename); // Creates an output file with a given file path
+			System.out.println("nooooooopppppppppppppppppppp");
+			ObjectInputStream out = new ObjectInputStream(file); // Writing primitive data types to a stream of bytes
+			System.out.println("noooooootttttttttttttttttttttttttt");
+
+//			System.out.println("nooooooobbbbbbbbbbbbbbbbbbbbbb");
+			out.close(); // Closes the byte stream
+			file.close(); // Closes the file stream
+
+			System.out.println("Object has been deserialized");
+		}
+		catch(Exception e){
+			System.out.println("nlah");
 		}
 	}
-
 }
