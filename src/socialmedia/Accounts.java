@@ -34,4 +34,8 @@ public class Accounts {
 			}
 		}
 	}
+	
+	public static void clearAccounts() {
+		accountList.clear();
+	}
 }

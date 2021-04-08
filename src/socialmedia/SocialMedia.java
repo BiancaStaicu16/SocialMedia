@@ -1,6 +1,8 @@
 package socialmedia;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -329,8 +331,8 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public StringBuilder showPostChildrenDetails(int id)
 			throws PostIDNotRecognisedException, NotActionablePostException {
+		
 		StringBuilder showDetailsStringBuilder = new StringBuilder();
-
 		String showDetails = showIndividualPost(id);
 
 		showDetailsStringBuilder.append(showDetails);
@@ -348,10 +350,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			countIndentation++;
 			String tabs = "\t";
 			String totalIndentations = tabs.repeat(countIndentation);
-
-
-
-
 
 			showDetailsStringBuilder.append(pipeFormatting);
 			int currentCommentId = thisComment.getCommentId();
@@ -378,21 +376,25 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getNumberOfAccounts() {
+		// Returns the number of account in the accounts list
 		return Accounts.getNumberOfAccounts();
 	}
 
 	@Override
 	public int getTotalOriginalPosts() {
+		// Returns the number of posts in the posts list
 		return Posts.getPostList().size();
 	}
 
 	@Override
 	public int getTotalEndorsmentPosts() {
+		// Returns the number of endorsements in the endorsements list
 		return Endorsements.getEndorsementList().size();
 	}
 
 	@Override
 	public int getTotalCommentPosts() {
+		// Returns the number of comments from the comments list
 		return Comments.getCommentList().size();
 	}
 
@@ -452,20 +454,44 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void erasePlatform() {
-		// TODO Auto-generated method stub
+		// All array lists (endorsements, posts, comments and account) are emptied
+		Endorsements.clearEndorsements();
+		Posts.clearPosts();
+		Comments.clearComments();
+		Accounts.clearAccounts();
 
 	}
 
 	@Override
 	public void savePlatform(String filename) throws IOException {
-		// TODO Auto-generated method stub
+		
+		ArrayList<Endorsement> endorsementList = Endorsements.getEndorsementList();
+		try { 
+		FileOutputStream file = new FileOutputStream(filename); // Creates an output file with a given file path
+		ObjectOutputStream out = new ObjectOutputStream(file); // Writing primitive data types to a stream of bytes
+		out.writeObject(endorsementList); //For Serialization (use readObject() for deserializtion) 
+		out.close(); // Closes the byte stream
+		file.close(); // Closes the file stream
+		 
+		System.out.println("Object has been serialized"); 
+		} 
+		catch(Exception e){ } 
+		} 
 
-	}
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
+		
+		try {
+		    FileInputStream streamIn = new FileInputStream(filename);
+		    objectinputstream = new ObjectInputStream(streamIn);
+		    ArrayList<Endorsement> endorsmentList = (ArrayList<Endorsement>) objectinputstream.readObject();
+		    // recordList.add(readCase);
+		    System.out.println(endorsmentList);
+		} catch (Exception e) {
+		    e.printStackTrace();
 
+		}
 	}
 
 }

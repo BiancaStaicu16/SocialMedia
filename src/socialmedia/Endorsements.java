@@ -37,6 +37,10 @@ public class Endorsements {
 
 		return endorsementCount;
 	}
+	
+	public static void clearEndorsements() {
+		endorsementList.clear();
+	}
 
 
 }

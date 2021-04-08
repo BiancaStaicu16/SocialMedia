@@ -50,4 +50,8 @@ public class Comments {
 		}
 		return null; // If the comment wasn't found
 	}
+	
+	public static void clearComments() {
+		commentList.clear();
+	}
 }

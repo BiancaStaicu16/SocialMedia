@@ -33,4 +33,8 @@ public class Posts {
     	
     	return postCount;
     }
+    
+    public static void clearPosts() {
+    	postList.clear();
+    }
 }

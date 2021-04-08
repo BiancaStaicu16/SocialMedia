@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import socialmedia.*;
 
 /**
@@ -19,8 +21,10 @@ public class SocialMediaPlatformTestApp {
 	 * @throws IllegalHandleException 
 	 * @throws HandleNotRecognisedException
 	 * @throws NotActionablePostException 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException, NotActionablePostException {
+	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException, NotActionablePostException, IOException, ClassNotFoundException {
 		System.out.println("The system compiled and started the execution...");
 
 
@@ -44,7 +48,11 @@ public class SocialMediaPlatformTestApp {
 			int newComment = platform.commentPost("my_handle", 1, "blah");
 			int newend = platform.endorsePost("Bianca", newPost1);
 			int ngfghj = platform.endorsePost("Bianca", newPost1);
-
+			// String filename = "C:\\Users\\bhsbu\\git\\SocialMedia\\src\filename";
+			platform.savePlatform("filename");
+			platform.loadPlatform("filename");
+			
+			
 			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
@@ -56,5 +64,4 @@ public class SocialMediaPlatformTestApp {
 			e.printStackTrace();
 		}
 	}
-
 }
