@@ -486,10 +486,18 @@ public class SocialMedia implements SocialMediaPlatform {
 	  try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))){
 		  
 		  Object objectOne = in.readObject();
-		  if(objectOne instanceof ArrayList<Endorsement>) {
+		  System.out.println(objectOne);
+		  
+		  Object objectTwo = in.readObject();
+		  System.out.println(objectTwo);
+		  
+		  if(objectOne instanceof Endorsement[]) {
+			  System.out.println("YES")
 			  endorsementList = (ArrayList<Endorsement>) objectOne;
+			  System.out.println(endorsementList);
 		  }
 		  
+		  /*
 		  Object objectTwo = in.readObject();
 		  if(objectTwo instanceof ArrayList<Comment>) {
 			  commentList = (ArrayList<Comment>) objectTwo;
@@ -504,6 +512,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		  if(objectFour instanceof ArrayList<Account>) {
 			  accountList = (ArrayList<Account>)objectFour;
 		  }
+		  */
 		  
 
 	  }
