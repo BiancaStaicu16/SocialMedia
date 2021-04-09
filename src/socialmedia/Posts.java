@@ -9,6 +9,10 @@ public class Posts {
     public static ArrayList<Post> getPostList() {
         return postList;
     }
+    
+    public static void setPostList(ArrayList<Post> list) {
+    	postList = list;
+    }
 
     public static void addPost(Post item){
         postList.add(item);

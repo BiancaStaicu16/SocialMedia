@@ -13,6 +13,10 @@ public class Accounts {
 		return accountList;
 	}
 	
+	public static void setAccountList(ArrayList<Account> list) {
+		accountList = list;
+	}
+	
 	public static int getNumberOfAccounts() {
 		return accountList.size();
 	}

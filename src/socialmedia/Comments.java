@@ -9,6 +9,10 @@ public class Comments {
 	public static ArrayList<Comment> getCommentList() {
         return commentList;
     }
+	
+	public static void setCommentList(ArrayList<Comment> list) {
+		commentList = list;
+	}
 
     public static void addComment(Comment item){
         commentList.add(item);

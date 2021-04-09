@@ -10,6 +10,10 @@ public class Endorsements {
 	public static ArrayList<Endorsement> getEndorsementList() {
         return endorsementList;
     }
+	
+	public static void setEndorsementList(ArrayList<Endorsement> list) {
+		endorsementList = list;
+	}
 
     public static void addEndorsement(Endorsement item){
         endorsementList.add(item);

@@ -468,56 +468,40 @@ public class SocialMedia implements SocialMediaPlatform {
 			out.writeObject(endorsementList); 
 			out.writeObject(commentList);
 			out.writeObject(postList);
-			System.out.println("SERIALIZED");
+			out.writeObject(accountList);
 		}
 		
-		catch(Exception e) {System.out.println("Yes");}
+		catch(Exception e) {System.out.println(e);}
 		 
 	}
 
 
 	@Override
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
-		
+	
+	  // Initializing array list for each object type
 	  ArrayList<Endorsement> endorsementList = null;
 	  ArrayList<Comment> commentList = null;
 	  ArrayList<Post> postList = null;
 	  ArrayList<Account> accountList = null;
+	  
 	  try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))){
 		  
-		  Object objectOne = in.readObject();
-		  System.out.println(objectOne);
+		  endorsementList = (ArrayList<Endorsement>) in.readObject();
+		  Endorsements.setEndorsementList(endorsementList);
 		  
-		  Object objectTwo = in.readObject();
-		  System.out.println(objectTwo);
+		  commentList = (ArrayList<Comment>) in.readObject();
+		  Comments.setCommentList(commentList);
 		  
-		  if(objectOne instanceof Endorsement[]) {
-			  System.out.println("YES")
-			  endorsementList = (ArrayList<Endorsement>) objectOne;
-			  System.out.println(endorsementList);
-		  }
+		  postList = (ArrayList<Post>) in.readObject();
+		  Posts.setPostList(postList);
 		  
-		  /*
-		  Object objectTwo = in.readObject();
-		  if(objectTwo instanceof ArrayList<Comment>) {
-			  commentList = (ArrayList<Comment>) objectTwo;
-		  }
-		  
-		  Object objectThree = in.readObject();
-		  if(objectThree instanceof ArrayList<Post>) {
-			  postList = (ArrayList<Post>)objectThree;
-		  }
-		  
-		  Object objectFour = in.readObject();
-		  if(objectFour instanceof ArrayList<Account>) {
-			  accountList = (ArrayList<Account>)objectFour;
-		  }
-		  */
-		  
+		  accountList = (ArrayList<Account>) in.readObject();
+		  Accounts.setAccountList(accountList);
 
 	  }
 	  
-	  catch (Exception e) {System.out.println("Error");}
+	  catch (Exception e) {System.out.println(e);}
 	  
 	}
 }

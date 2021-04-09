@@ -1,6 +1,8 @@
 package socialmedia;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
 	
 	private static int id = 0;
 	private int numId;
@@ -41,6 +43,6 @@ public class Account {
 	}
 
 	public String toString(){
-		return "numId:  " + numId + "/nstringHandle: " + stringHandle + "/ndescription: "  + description;
+		return "NumId:  " + numId + " String Handle: " + stringHandle + " Description: "  + description;
 	}
 }
