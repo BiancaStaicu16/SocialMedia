@@ -24,5 +24,4 @@ public class AccountIDNotRecognisedException extends Exception {
 	public AccountIDNotRecognisedException(String message) {
 		super(message);
 	}
-
 }

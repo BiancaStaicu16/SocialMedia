@@ -2,6 +2,9 @@ package socialmedia;
 
 import java.io.Serializable;
 
+/**
+ * Class of post.
+ */
 public class Post implements Serializable {
 
     private static int id = 0;
@@ -12,12 +15,16 @@ public class Post implements Serializable {
 
     private int postId = 0;
 
+    /**
+     * Constructor method.
+     * @param message - String
+     * @param stringHandle - String
+     */
     public Post( String message, String stringHandle){
         this.message = message;
         this.stringHandle = stringHandle;
         id++;
         postId = id;
-        
     }
 
     public String getStringHandle() {
@@ -43,5 +50,4 @@ public class Post implements Serializable {
     public void setStringHandle(String handle) {
     	stringHandle = handle;
     }
-
 }

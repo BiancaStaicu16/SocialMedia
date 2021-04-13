@@ -90,5 +90,4 @@ public class BadMiniSocialMedia implements MiniSocialMediaPlatform {
 		// TODO Auto-generated method stub
 
 	}
-
 }
