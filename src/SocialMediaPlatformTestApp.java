@@ -39,29 +39,19 @@ public class SocialMediaPlatformTestApp {
 		Integer id1;
 		try {
 			id = platform.createAccount("my_handle");
-			id1 = platform.createAccount("Bianca");
-			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
 
-			int newPost = platform.createPost("my_handle", "Hello");
-			int newPost1 = platform.createPost("Bianca", "hotz");
-			int newEndorsement = platform.endorsePost("my_handle", newPost);
-			int newComment = platform.commentPost("my_handle", 1, "blah");
-			int newend = platform.endorsePost("Bianca", newPost1);
-			int ngfghj = platform.endorsePost("Bianca", newPost1);
-			// String filename = "C:\\Users\\bianc\\OneDrive\\Desktop\\CA3\\SocialMedia\\filename";
-			String filename = "filename";
-			platform.savePlatform(filename);
-			platform.loadPlatform(filename);
+			assert (platform.getNumberOfAccounts() != 2) : "number of accounts registered in the system does not match";
+			System.out.println(platform.getNumberOfAccounts());
+
 			
-			
-			platform.removeAccount(id);
+//			platform.removeAccount(id);
 			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
-		 } catch (AccountIDNotRecognisedException e) {
-			 assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
-		} catch (InvalidHandleException e) {
+//		 } catch (AccountIDNotRecognisedException e) {
+//			 assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
+//		} catch (InvalidHandleException e) {
 			e.printStackTrace();
 		}
 	}
