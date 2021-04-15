@@ -44,7 +44,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		int index = 0;
 		Account firstAccount = new Account(handle);
-		Accounts.addAccount(firstAccount, index);
+		Accounts.addAccount(firstAccount);
 		return firstAccount.getNumId();
 	}
 
@@ -80,7 +80,7 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		int index = 0;
 		Account firstAccount = new Account(handle, description);
-		Accounts.addAccount(firstAccount, index);
+		Accounts.addAccount(firstAccount);
 		return firstAccount.getNumId();
 	}
 

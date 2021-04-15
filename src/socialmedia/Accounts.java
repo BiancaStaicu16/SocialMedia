@@ -24,9 +24,8 @@ public class Accounts {
 	/**
 	 * Method that add an account to the list of accounts.
 	 * @param item - Account
-	 * @param pos - Int
 	 */
-	public static void addAccount(Account item, int pos) {
+	public static void addAccount(Account item) {
 		accountList.add(item);
 	}
 

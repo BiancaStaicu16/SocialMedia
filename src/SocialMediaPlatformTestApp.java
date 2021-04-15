@@ -23,9 +23,9 @@ public class SocialMediaPlatformTestApp {
 	 * @throws NotActionablePostException 
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
-	 * @throws AccountIDNotRecognisedException 
 	 */
-	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException, NotActionablePostException, IOException, ClassNotFoundException, AccountIDNotRecognisedException {
+	public static void main(String[] args) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException, InvalidPostException, PostIDNotRecognisedException, NotActionablePostException, IOException, ClassNotFoundException {
+
 		System.out.println("The system compiled and started the execution...");
 
 
@@ -38,30 +38,15 @@ public class SocialMediaPlatformTestApp {
 
 		Integer id;
 		Integer id1;
-		Integer id2;
-		Integer id3;
 		try {
 			id = platform.createAccount("my_handle");
-			id1 = platform.createAccount("this_handle", "This is my account");
-			id2 = platform.createAccount("delete_this_account", "This account will be deleted");
-			id3 = platform.createAccount("also_delete_this");
 
-			assert (platform.getNumberOfAccounts() == 4) : "Number of accounts registered in the system does not match";
-			
-			platform.removeAccount(id2);
-			
-			assert (platform.getNumberOfAccounts() == 3) : "Number of accounts registered in the system does not match";
-			
-			platform.removeAccount("also_delete_this");
-			
-			assert (platform.getNumberOfAccounts() == 2) : "Number of accounts registered in the system does not match";
-			
-			
-			System.out.println(platform.showAccount("this_handle"));
-			platform.changeAccountHandle("this_handle", "new_handle");
-			System.out.println(platform.showAccount("new_handle"));
+			assert (platform.getNumberOfAccounts() != 2) : "number of accounts registered in the system does not match";
+			System.out.println(platform.getNumberOfAccounts());
 
-
+			
+//			platform.removeAccount(id);
+			assert (platform.getNumberOfAccounts() == 0) : "number of accounts registered in the system does not match";
 
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
