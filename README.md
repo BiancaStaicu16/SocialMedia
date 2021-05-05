@@ -17,7 +17,7 @@ Project was finished on 20/04/2021.
 ## Setup
 
 Unzip the archive. 
-Open a command prompt window and go to the directory where you saved the java program (HuffmanCoding.java). 
+Open a command prompt window and go to the directory where you saved the java program (SocialMedia.java). 
 Assume it's C:. 
 Type 'javac SocialMedia.java' and press enter to compile your code.
 If there are no errors in your code, the command prompt will take you to the next line (Assumption: The path variable is set).
